@@ -1,34 +1,76 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# MMR NFT Marketplace
+
+Digital Marketplace to list and purchase NFTs, deployed on Polygon.
+
+The marketplace logic consists of two smart contracts:
+
+**NFT Contract** - This contract allows users to mint unique digital assets.
+**Marketplace Contract** - This contract allows users to put their digital assets for sale on an open market.
+
+### Prerequisites
+
+The followings are required for this project:
+
+1. Node.js installed on your machine
+2. Metamask wallet extension installed as a browser extension
+
+### The Stack
+
+This is a full stack application using:
+
+- **Web application framework** - [Next.js](https://nextjs.org/)
+- **Solidity development environment** - [Hardhat](https://hardhat.org/)
+- **File Storage** - [IPFS](https://ipfs.io/)
+- **Ethereum Web Client Library** - [Ethers.js](https://docs.ethers.io/v5/)
 
 ## Getting Started
 
-First, run the development server:
+Clone the project and install all dependencies:
 
-```bash
-npm run dev
-# or
-yarn dev
+```sh
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then, save the private key for your wallet (exported from Metamask) into the `.secret` file, using the template file in the project.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+Finally, configure and connect to the **Polygon Mumbai** test network on Metamask, and get some Matic from the [Matic Faucet](https://faucet.matic.network/) so that you can interact with the application.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+## Running the Project
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+Execute the following command to deploy to the Polygon network:
 
-## Learn More
+```sh
+npx hardhat run scripts/deploy.js --network mumbai
+```
 
-To learn more about Next.js, take a look at the following resources:
+When the deployment is complete, the CLI should print out the addresses of the contracts that were deployed. Replace the content of `config.js` with these values.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+You can now test out the app by running the command:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+```sh
+npm run dev
+```
 
-## Deploy on Vercel
+> If you run into an error, the contract address printed out to the console by hardhat could be incorrect due to a bug. You can get the correct contract addresses by visiting [https://mumbai.polygonscan.com/](https://mumbai.polygonscan.com/) and pasting in the address from which the contracts were deployed to see the most recent transactions and getting the contract addresses from the transaction data.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Deploying to Mainnet
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+To deploy to the mainnet on the Polygon network, replace the configuration in the `hardhat.config.js` and the `loadNFTs` function in `pages/index.js` with the value of the mainnet RPC endpoint.
+
+```javascript
+/* hardhat.config.js */
+
+/* adding Matic main network config to existing config */
+...
+matic: {
+  url: "https://rpc-mainnet.maticvigil.com",
+  accounts: [privateKey]
+}
+...
+```
+
+Public RPCs like the one listed above may have traffic or rate-limits depending on usage. You can sign up for a dedicated free RPC URL using services like Infura, MaticVigil, QuickNode, Alchemy, Chainstack, or Ankr.
+
+### Next Steps
+
+For the next steps, we could port over the queries implemented in this app using [The Graph](https://thegraph.com/). The Graph will open up many more data access patterns including things like pagination, filtering, and sorting which are necessary for more advanced applications.
