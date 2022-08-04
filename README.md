@@ -74,3 +74,5 @@ Public RPCs like the one listed above may have traffic or rate-limits depending 
 ### Next Steps
 
 For the next steps, we could port over the queries implemented in this app using [The Graph](https://thegraph.com/). The Graph will open up many more data access patterns including things like pagination, filtering, and sorting which are necessary for more advanced applications.
+
+We can also add additional steps to prepare for a deployment in production, such as veryfing the contracts that have been deployed.
